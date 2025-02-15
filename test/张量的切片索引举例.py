@@ -1,0 +1,25 @@
+import torch 
+minval=0
+maxval=100
+#创建4个班，每个班5名同学，每名同学7门课程的分数表，分数取从0到100的随机数
+scores=torch.floor(minval+(maxval-minval)*torch.rand([4,5,7]))
+#torch.floor是向下取整操作，.int()操作是将张量类型转化为数据类型
+print(scores)
+#抽取每个班级0，2，4号的所有成绩
+selected_scores=torch.index_select(scores,dim=1,index=torch.tensor([0,2,4]))
+#print(selected_scores)
+#这里的dim=0就是选哪个班，dim=1就是选每个班的哪几个学生，dim=2就是选每个班，每个学生的哪几门成绩
+selected2_scores=torch.index_select(scores,dim=2,index=torch.tensor([0,1,2]))
+#print(selected2_scores)
+#取4班5号1，0班0号5课程：注意默认首位检索号码为0
+selected3_scores=torch.take(scores,index=torch.tensor([3*5*7+4*7+0,0*5*7+4]))
+#print(selected3_scores)
+A=torch.masked_select(scores,scores>=80)
+#print(A)，选择所有大于80的分数
+C=torch.where(scores>=60,torch.tensor([1]),torch.tensor([0]))
+#print(C)，大于60赋分1，否则为0
+#把每个班0，2，4号学生的成绩赋为满分
+C=torch.index_fill(scores,dim=2,index=torch.tensor([0,2,4]),value=100)
+#print(C)
+D=torch.masked_fill(scores,scores>=60,value=100)
+#print(D)，把大于60的分数赋为100

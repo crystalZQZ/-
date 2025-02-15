@@ -23,3 +23,8 @@ tensor2=torch.linspace(1,10,steps=5)
 print(tensor2)
 tensor3=torch.ones((3,3))
 print(tensor3)
+
+#生成随机数
+torch.manual_seed(0)
+a=torch.rand(5)
+print(a)
